@@ -1,20 +1,18 @@
 package entity;
 
 public class Room {
-    private String room_id;
+    private String roomID;
     private String size;
     private float price;
-    private boolean status;
 
-    Room(String room_id, String size, float price) {
-        this.room_id = room_id;
+    Room(String roomID, String size, float price) {
+        this.roomID = roomID;
         this.size = size;
         this.price = price;
-        status = false;
     }
 
-    public String getRoom_id() {
-        return room_id;
+    public String getRoomID() {
+        return roomID;
     }
 
     public String getSize() {
@@ -25,7 +23,7 @@ public class Room {
         return price;
     }
 
-    public void turnStatus() {
-        status = !status;
+    public String toString() {
+        return String.format("Room_ID: %2s | Room_size: %-9s | Room_price: %s", roomID, size, price);
     }
 }

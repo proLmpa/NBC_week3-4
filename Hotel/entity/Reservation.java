@@ -35,10 +35,16 @@ public class Reservation {
     public String dateFormat(Calendar today) {
         return today.get(Calendar.YEAR)+"-" + (today.get(Calendar.MONTH)+1)+"-"
                 + today.get(Calendar.DATE)+"T" + today.get(Calendar.HOUR)+":"
-                + today.get(Calendar.MINUTE)+":" + today.get(Calendar.SECOND);
+                + today.get(Calendar.MINUTE)+":" + today.get(Calendar.SECOND)+"Z";
     }
 
-    public String getReservedInfo(){
-        return String.format("Room_id: %s | Room_size: %s | Room_price: %s | Name: %s | Phone_number: %s | Reserved_date: %s", room.getRoom_id(), room.getSize(), room.getPrice(), name, phoneNum, date);
+    // 예약 정보 반환하는 함수
+    public String toString() {
+        return "Room_id: " + room.getRoomID() +
+                " | Room_size: " + room.getSize() +
+                " | Room_price: " + Float.toString(room.getPrice()) +
+                " | name: " + name +
+                " | phoneNum: " + phoneNum +
+                " | date: " + date;
     }
 }

@@ -1,13 +1,11 @@
 package entity;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.LinkedHashMap;
 public class Hotel {
     private float asset;        // 보유 자산
-    private ArrayList<Room> rooms;   // 객실
-    // HashMap<Room, boolean> rooms;
+    private LinkedHashMap<Room, Boolean> rooms; // 객실
     private HashMap<String, Reservation> reservations; // 호텔 예약 목록 key = uuid, value = Reservation
 
     public Hotel() {
@@ -17,20 +15,23 @@ public class Hotel {
     }
 
     // 호텔 보유 객실 초기화
-    private ArrayList<Room> initRooms() {
-        ArrayList<Room> rooms = new ArrayList<>();
-        rooms.add(new Room("1", "Single", 100f));
-        rooms.add(new Room("2", "Single", 100f));
-        rooms.add(new Room("3", "Single", 100f));
-        rooms.add(new Room("4", "Double", 180f));
-        rooms.add(new Room("5", "Double", 180f));
-        rooms.add(new Room("6", "Double", 180f));
-        rooms.add(new Room("7", "Family", 320f));
-        rooms.add(new Room("8", "Family", 320f));
-        rooms.add(new Room("9", "Family", 320f));
-        rooms.add(new Room("10", "Premium", 750f));
-        rooms.add(new Room("11", "Premium", 750f));
-        rooms.add(new Room("12", "Superior", 1250f));
+    private LinkedHashMap<Room, Boolean> initRooms() {
+        LinkedHashMap<Room, Boolean> rooms = new LinkedHashMap<>();
+        rooms.put(new Room("1", "Single", 100f), false);
+        rooms.put(new Room("2", "Single", 100f), false);
+        rooms.put(new Room("3", "Single", 100f), false);
+        rooms.put(new Room("4", "Double", 180f), false);
+        rooms.put(new Room("5", "Double", 180f), false);
+        rooms.put(new Room("6", "Double", 180f), false);
+        rooms.put(new Room("7", "Double", 180f), false);
+        rooms.put(new Room("8", "Family", 320f), false);
+        rooms.put(new Room("9", "Family", 320f), false);
+        rooms.put(new Room("10", "Family", 320f), false);
+        rooms.put(new Room("11", "Family", 320f), false);
+        rooms.put(new Room("12", "Premium", 750f), false);
+        rooms.put(new Room("13", "Premium", 750f), false);
+        rooms.put(new Room("14", "Premium", 750f), false);
+        rooms.put(new Room("15", "Superior", 1250f), false);
         return rooms;
     }
 
@@ -39,36 +40,54 @@ public class Hotel {
         return asset;
     }
 
-    // 보유 자산 추가
-    public void addAsset(float asset) {
-
-    }
-
-    // 보유 자산 감소
-    public void subAsset(float asset) {
-
-    }
-
     // 보유 객실 조회
-    public List<Room> getRooms() {
+    public HashMap<Room, Boolean> getRooms() {
         return rooms;
     }
 
     // 보유 객실 추가
     public void addRoom(Room room) {
-        rooms.add(room);
+        rooms.put(room, false);
     }
 
-    // 예약 가능한 객실 조회
-    public void viewAllRooms() {
-        // for문 , iterator으로 ArrayList<Room> 하나씩 불러올 때
-        // Room의 status 필드가 true이면 넘어가고, false이면 출력한다.
+    // 예약 가능한 객실 조회 (구현)
+    public ArrayList<Room> displayAllRooms() {
+        // 사용 중이지 않은 room들을 담을 ArrayList<Room>을 새로 정의한다.
+        ArrayList<Room> roomList = new ArrayList<>();
+
+        // rooms (Room 타입의 객실 Map)를 keySet()을 통한 for문을 통해 room을 하나씩 불러오고
+        // room을 키로 rooms의 value에 접근해 해당 객실이 사용중('true')면 넘어가고, 그렇지 않으면('false') 출력한다.
+
+        // 사용 중이지 않은 room은 ArrayList<Room>에 추가하고 for문이 끝나면 return 한다.
+        return roomList;
+    }
+
+    // 1. 예약하기 -- 객실 예약 확정 (구현)
+    public void bookRoom(Room room) {
+        // 객실의 상태를 '사용중(true)'로 변경
+        // 호텔 보유 자산을 예약된 방 가격만큼 증가시킴
+    }
+
+    // 3. 예약 취소하기 -- 객실 예약 취소 (구현)
+    public void cancelRoom(Room room) {
+        // 객실의 상태를 '사용 안함(false)'로 변경
+        // 호텔 보유 자산을 예약된 방 가격만큼 감소시킴
+    }
+
+    // 1. 예약 확인하기 -- 예약 목록에 예약 정보 추가 (구현)
+    public void addReservation(String uuid, Reservation reservation){
+        // 예약 목록(reservations)에 uuid를 키로 reservation 삽입
+    }
+
+    // 3. 예약 취소하기 -- 예약 목록에서 예약 정보 제거 (구현)
+    public void removeReservation(String uuid){
+        // 예약 목록(reservations)에서 uuid를 키로 reservation 삽입
     }
 
     // 예약 목록 조회
-    public void viewAllReservations() {
+    public void displayAllReservations() {
         for (String key : reservations.keySet()) {
-            reservations.get(key).getReservedInfo();
+            reservations.get(key).toString();
         }
     }
 }

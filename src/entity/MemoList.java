@@ -46,25 +46,47 @@ public class MemoList {
         return list.get(idx);
     }
 
-    // 메모 1건 수정 (구현)
+    // 메모 1건 수정
     public void editMemo(int idx) {
-        // (1) list에서 idx에 해당하는 Memo 가져오기
-        // (2) 해당 Memo 내용 출력하기
+        Memo memo = list.get(idx-1); // (1) list에서 idx에 해당하는 Memo 가져오기
+        memo.printMemo();            // (2) 해당 Memo 내용 출력하기
 
-        // (3) scanner로 수정할 내용 입력받기
-        // (4) Memo의 게시글(post) 필드 갱신
+        // (3) 해당 Memo 게시글(post) 필드 갱신
+        System.out.print("수정할 내용을 입려하세요 : ");
+        memo.setPost(sc.nextLine());
     }
 
     // 메모 1건 삭제 (구현)
     public void deleteMemo(int idx) {
-        // (1) list에서 idx에 해당하는 Memo 가져오기
-        // (2) list에서 해당 memo를 제거
+        Memo memo = list.get(idx-1); // (1) list에서 idx에 해당하는 Memo 가져오기
+        memo.printMemo();
 
-        editMemoNum(idx); // (3) 글 삭제 후 글 번호 재지정 작업
+        // (2) list에서 해당 memo를 제거
+        System.out.println("해당 메모를 삭제하시겠습니까?");
+        System.out.println("1. 확인 \t 2. 취소");
+        System.out.print("번호를 입력해주세요: ");
+        if(sc.nextInt() == 1){
+            sc.nextLine();
+            list.remove(idx-1);
+            System.out.println("해당 메모가 삭제되었습니다.");
+
+            editMemoNum(idx); // (3) 글 삭제 후 글 번호 재지정 작업
+        }
     }
 
     // 글 삭제 후 Memo의 num 필드 수정 (구현)
     public void editMemoNum(int idx){
         // for 문으로 idx 부터 list.size()까지의 memo들의 num을 수정
+        for(int i = idx; i <= list.size(); i++){
+            list.get(i-1).setNum(i);
+        }
     }
 }
+
+
+/*
+print : 1 2 3 4 5 6 7 8 9 10 ... // 눈에 보이는 출력문 순서
+idx   : 0 1 2 3 4 5 6 7 8 9 ...  // List에 저장된 index 순서
+num   : 1 3(->2) 4(->3)..         // memo 각각에 저장된 num 값
+    from idx -> to list.size()
+ */

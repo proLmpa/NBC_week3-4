@@ -193,7 +193,10 @@ public class Home {
         Room room = reservation.getRoom();
 
         // 예약 목록 취소 및 가격 반환 (구현)
-        cancelRoom(customer, room, uuid);
+        cancelRoom(customer, room);
+
+        // 고객: 해당 예약 정보를 예약 목록에서 제거하기
+        reservations.remove(uuid);
     }
 
     public String getUUID(HashMap<String, Reservation> reservations) {
@@ -215,7 +218,7 @@ public class Home {
         System.out.println("------------------------------------------------------------------------------------------------------------------------\n");
     }
 
-    public void cancelRoom(Customer customer, Room room, String uuid) {
+    public void cancelRoom(Customer customer, Room room) {
         // 호텔: 해당 객실을 예약 가능으로 바꾸고, 호텔의 보유자산을 객실 가격 만큼 빼기 (구현)
         hotel.cancelRoom(room);
         // 호텔: 해당 예약 정보를 예약 목록에서 제거하기 (구현)
@@ -223,7 +226,5 @@ public class Home {
 
         // 고객: 고객의 소지금에 객실 가격만큼 다시 추가한다 (구현)
         customer.setWallet(customer.getWallet() + room.getPrice());
-        // 고객: 해당 예약 정보를 예약 목록에서 제거하기
-        reservations.remove(uuid);
     }
 }

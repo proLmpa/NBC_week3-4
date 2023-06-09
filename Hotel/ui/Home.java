@@ -10,18 +10,18 @@ public class Home {
     private Scanner sc;
 
     public Home() {
-        // Hotel 인스턴스 생성하기 (구현)
+        hotel = new Hotel();
         sc = new Scanner(System.in);
     }
 
     public void start() {
-        // Master 인스턴스를 생성자를 통해 만들면서 Hotel 인스턴스를 매개변수로 넘겨주기 (구현)
-        // Client 인스턴스를 생성자를 통해 만들면서 Hotel 인스턴스를 매개변수로 넘겨주기 (구현)
+        Master master = new Master(hotel);
+        Client client = new Client(hotel);
 
         while(true) {
             printMainMenu();
 
-            System.out.print("번호를 입력해주세요: ");
+            System.out.print("번호를 입력해주세요 (종료: 0): ");
             int choice = sc.nextInt();
             sc.nextLine();
 

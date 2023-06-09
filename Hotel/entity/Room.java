@@ -5,7 +5,7 @@ public class Room {
     private String size;
     private float price;
 
-    Room(String roomID, String size, float price) {
+    public Room(String roomID, String size, float price) {
         this.roomID = roomID;
         this.size = size;
         this.price = price;

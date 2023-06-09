@@ -7,14 +7,18 @@ public class Hotel {
     private float asset;        // 보유 자산
     private LinkedHashMap<Room, Boolean> rooms; // 객실
     private HashMap<String, Reservation> reservations; // 호텔 예약 목록 key = uuid, value = Reservation
+    private HashMap<String, Float> walletMap;     // 기존 고객의 소지금 목록
+    private HashMap<String, HashMap<String, Reservation>> reservationMap;    // 기존 고객의 예약 목록
 
     public Hotel() {
         asset = 0f;
         rooms = initRooms();
         reservations = new HashMap<>();
+        walletMap = new HashMap<>();
+        reservationMap = new HashMap<>();
     }
 
-    // 호텔 보유 객실 초기화
+    // 0. 호텔 보유 객실 초기화
     private LinkedHashMap<Room, Boolean> initRooms() {
         LinkedHashMap<Room, Boolean> rooms = new LinkedHashMap<>();
         rooms.put(new Room("1", "Single", 100f), false);
@@ -50,44 +54,72 @@ public class Hotel {
         rooms.put(room, false);
     }
 
-    // 예약 가능한 객실 조회 (구현)
+    // 예약 가능한 객실 조회
     public ArrayList<Room> displayAllRooms() {
-        // 사용 중이지 않은 room들을 담을 ArrayList<Room>을 새로 정의한다.
+        StringBuilder sb = new StringBuilder();
         ArrayList<Room> roomList = new ArrayList<>();
 
-        // rooms (Room 타입의 객실 Map)를 keySet()을 통한 for문을 통해 room을 하나씩 불러오고
-        // room을 키로 rooms의 value에 접근해 해당 객실이 사용중('true')면 넘어가고, 그렇지 않으면('false') 출력한다.
+        sb.append("\n--------------------------[예약하기]-------------------------\n");
+        rooms.keySet().stream().filter(room -> !rooms.get(room)).forEach(
+                room -> {
+                    roomList.add(room);
+                    // sb.append(roomList.size() +". " + room.toString() + "\n");
+                    sb.append(String.format("%,2d. %s\n", roomList.size(), room.toString()));
+                }
+            );
+        sb.append("-----------------------------------------------------------\n");
 
-        // 사용 중이지 않은 room은 ArrayList<Room>에 추가하고 for문이 끝나면 return 한다.
+        System.out.print(sb);
         return roomList;
     }
 
-    // 1. 예약하기 -- 객실 예약 확정 (구현)
-    public void bookRoom(Room room) {
-        // 객실의 상태를 '사용중(true)'로 변경
-        // 호텔 보유 자산을 예약된 방 가격만큼 증가시킴
+    // 객실 예약하기
+    public void bookRoom(String uuid, Room room, Reservation reservation) {
+        rooms.put(room, true);      // 객실의 상태를 '사용중(true)'로 변경
+        asset += room.getPrice();   // 호텔 보유 자산을 예약된 방 가격만큼 증가시킴
+        reservations.put(uuid, reservation);    // 예약 목록에 예약 정보 추가하기
     }
 
-    // 3. 예약 취소하기 -- 객실 예약 취소 (구현)
-    public void cancelRoom(Room room) {
-        // 객실의 상태를 '사용 안함(false)'로 변경
-        // 호텔 보유 자산을 예약된 방 가격만큼 감소시킴
-    }
-
-    // 1. 예약 확인하기 -- 예약 목록에 예약 정보 추가 (구현)
-    public void addReservation(String uuid, Reservation reservation){
-        // 예약 목록(reservations)에 uuid를 키로 reservation 삽입
-    }
-
-    // 3. 예약 취소하기 -- 예약 목록에서 예약 정보 제거 (구현)
-    public void removeReservation(String uuid){
-        // 예약 목록(reservations)에서 uuid를 키로 reservation 삽입
+    // 객실 예약 취소
+    public void cancelRoom(String uuid, Room room) {
+        rooms.put(room, false);     // 객실의 상태를 '사용 안함(false)'로 변경
+        asset -= room.getPrice();   // 호텔 보유 자산을 예약된 방 가격만큼 감소시킴
+        reservations.remove(uuid);  // 예약 목록에서 예약 정보 제거하기
     }
 
     // 예약 목록 조회
     public void displayAllReservations() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n--------------------------------------------------------[예약 목록]------------------------------------------------------\n");
         for (String key : reservations.keySet()) {
-            reservations.get(key).toString();
+            sb.append(reservations.get(key).toString()+"\n");
         }
+        sb.append("------------------------------------------------------------------------------------------------------------------------\n");
+        System.out.println(sb);
+    }
+
+    // 고객이 기존에 가입한 적 있는지 조회
+    public boolean hasHistory(String key) {
+        return reservationMap.containsKey(key);
+    }
+
+    // 기존 고객의 소지금 불러오기
+    public float getCustomerWallet(String key){
+        return walletMap.get(key);
+    }
+
+    // 기존 고객의 남은 소지금 저장하기
+    public void putCustomerWallet(String key, float value){
+        walletMap.put(key, value);
+    }
+
+    // 기존 고객의 예약 내역 불러오기
+    public HashMap<String, Reservation> getCustomerReservations(String key) {
+        return reservationMap.get(key);
+    }
+
+    // 기존 고객의 예약 내역 저장하기
+    public void setCustomerReservations(String key, HashMap<String, Reservation> value) {
+        reservationMap.put(key, value);
     }
 }

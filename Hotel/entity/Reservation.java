@@ -40,11 +40,7 @@ public class Reservation {
 
     // 예약 정보 반환하는 함수
     public String toString() {
-        return "Room_id: " + room.getRoomID() +
-                " | Room_size: " + room.getSize() +
-                " | Room_price: " + Float.toString(room.getPrice()) +
-                " | name: " + name +
-                " | phoneNum: " + phoneNum +
-                " | date: " + date;
+        return String.format("Room_id: %-2s | Room_size: %-9s | Room_price: %7s | name: %s | phoneNum: %s | date: %s",
+                room.getRoomID(), room.getSize(), Float.toString(room.getPrice()), name, phoneNum, date);
     }
 }
